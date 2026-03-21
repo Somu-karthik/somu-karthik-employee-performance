@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Karthik",
+    "email": "test@gmail.com",
+    "password": "$2b$10$3r11i20cXDRmqJhA0jZyK.UPvOLnEWmRUKhRTnTwvNPjcTfX0ZMZW"
+  },
+  {
+    "id": 2,
+    "name": "michael",
+    "email": "manager@gmail.com",
+    "password": "$2b$10$PJQytuOyPEBeP3UfPBwU6OSYfVY7O8/gOkezYBlpc9np2zMdsUa.."
+  }
+]

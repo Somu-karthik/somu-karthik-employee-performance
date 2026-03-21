@@ -1,0 +1,63 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="28" y1="20" x2="220" y2="236" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset="0.5" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="lineGradient" x1="58" y1="70" x2="206" y2="198" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#BFE7FF"/>
+      <stop offset="1" stop-color="#D8B4FE"/>
+    </linearGradient>
+    <radialGradient id="glowGradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(128 92) rotate(90) scale(110 126)">
+      <stop offset="0" stop-color="#93C5FD" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#93C5FD" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="6" y="4" width="244" height="248" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="12" result="effect1_foregroundBlur"/>
+    </filter>
+    <filter id="cardShadow" x="16" y="12" width="224" height="232" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="10"/>
+      <feGaussianBlur stdDeviation="14"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.145098 0 0 0 0 0.290196 0 0 0 0 0.768627 0 0 0 0.28 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#softGlow)">
+    <circle cx="128" cy="128" r="84" fill="url(#glowGradient)"/>
+  </g>
+
+  <g filter="url(#cardShadow)">
+    <rect x="30" y="22" width="196" height="212" rx="52" fill="#081327"/>
+    <rect x="34" y="26" width="188" height="204" rx="48" fill="url(#bgGradient)"/>
+    <rect x="34" y="26" width="188" height="204" rx="48" fill="url(#glowGradient)" fill-opacity="0.55"/>
+    <rect x="42" y="34" width="172" height="188" rx="42" stroke="white" stroke-opacity="0.18" stroke-width="2"/>
+  </g>
+
+  <path d="M58 170H198" stroke="url(#lineGradient)" stroke-width="10" stroke-linecap="round" stroke-opacity="0.35"/>
+  <path d="M58 152C76 144 87 122 103 122C119 122 130 152 145 152C160 152 169 98 190 82" stroke="url(#lineGradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+  <circle cx="103" cy="122" r="7" fill="#D9F1FF"/>
+  <circle cx="145" cy="152" r="7" fill="#C4B5FD"/>
+  <circle cx="190" cy="82" r="8" fill="#E0F2FE"/>
+
+  <path d="M78 76H164" stroke="white" stroke-opacity="0.16" stroke-width="8" stroke-linecap="round"/>
+  <path d="M78 96H146" stroke="white" stroke-opacity="0.1" stroke-width="6" stroke-linecap="round"/>
+
+  <path d="M83 92H155" stroke="white" stroke-opacity="0.22" stroke-width="16" stroke-linecap="round"/>
+  <path d="M83 92V164" stroke="white" stroke-opacity="0.22" stroke-width="16" stroke-linecap="round"/>
+  <path d="M83 128H141" stroke="white" stroke-width="16" stroke-linecap="round"/>
+
+  <path d="M171 92H123" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M147 92V164" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round" stroke-opacity="0.95"/>
+  <path d="M123 128H165" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round"/>
+
+  <path d="M183 92H147" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M147 92V164" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M147 164H183" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round"/>
+</svg>
