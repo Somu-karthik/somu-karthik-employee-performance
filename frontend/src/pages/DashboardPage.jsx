@@ -19,6 +19,7 @@ import {
   deleteEmployee,
   getEmployees,
   getReports,
+  isAdminUser,
   updateEmployee,
 } from '../services'
 
@@ -116,6 +117,7 @@ function downloadCsvReport(reportSummary) {
 }
 
 function DashboardPage() {
+  const canDeleteEmployees = isAdminUser()
   const [employees, setEmployees] = useState([])
   const [formValues, setFormValues] = useState(defaultForm)
   const [editingEmployeeId, setEditingEmployeeId] = useState(null)
@@ -662,14 +664,16 @@ function DashboardPage() {
                             >
                               Edit
                             </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDelete(employee.id)}
-                              disabled={isSubmitting}
-                              className="rounded-full bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:scale-105 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
-                            >
-                              Delete
-                            </button>
+                            {canDeleteEmployees ? (
+                              <button
+                                type="button"
+                                onClick={() => handleDelete(employee.id)}
+                                disabled={isSubmitting}
+                                className="rounded-full bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:scale-105 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
+                              >
+                                Delete
+                              </button>
+                            ) : null}
                           </div>
                         </td>
                       </tr>
@@ -767,6 +771,16 @@ function DashboardPage() {
                     ? 'Update employee'
                     : 'Add employee'}
               </button>
+              {editingEmployeeId && canDeleteEmployees ? (
+                <button
+                  type="button"
+                  onClick={() => handleDelete(editingEmployeeId)}
+                  disabled={isSubmitting}
+                  className="rounded-full border border-rose-200 bg-rose-50 px-5 py-3 text-sm font-semibold text-rose-700 transition hover:scale-105 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  Delete employee
+                </button>
+              ) : null}
 
               <button
                 type="button"

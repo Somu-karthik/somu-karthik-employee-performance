@@ -1,34 +1,67 @@
-const authModel = require('../models/authModel')
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { createUser, findUserByEmail } = require("../models/userModel");
 
-async function login(req, res, next) {
+// ✅ REGISTER
+const register = async (req, res) => {
+  const { name, email, password, role } = req.body;
+
   try {
-    const result = await authModel.loginUser(req.body)
+    const userExists = await findUserByEmail(email);
 
-    res.status(200).json({
-      success: true,
-      message: 'Login successful',
-      ...result,
-    })
-  } catch (error) {
-    next(error)
-  }
-}
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-async function register(req, res, next) {
-  try {
-    const result = await authModel.registerUser(req.body)
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await createUser(name, email, hashedPassword, role);
+
+    const user = newUser.rows[0];
+    delete user.password;
 
     res.status(201).json({
       success: true,
-      message: 'Registration successful',
-      ...result,
-    })
-  } catch (error) {
-    next(error)
-  }
-}
+      user,
+    });
 
-module.exports = {
-  login,
-  register,
-}
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ✅ LOGIN (your code — already correct)
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const userResult = await findUserByEmail(email);
+
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const user = userResult.rows[0];
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    delete user.password;
+
+    res.json({
+      success: true,
+      message: "Login successful",
+      user,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ✅ EXPORT (VERY IMPORTANT)
+module.exports = { register, login };

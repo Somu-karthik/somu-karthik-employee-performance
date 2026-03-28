@@ -8,4 +8,5 @@ export {
 } from './employeeService'
 export { getKpis } from './kpiService'
 export { getReports } from './reportService'
+export { getCurrentUser, isAdminUser } from './sessionService'
 export { getToken, removeToken, setToken, TOKEN_KEY } from './tokenService'

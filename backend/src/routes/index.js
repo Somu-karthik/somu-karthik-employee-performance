@@ -1,4 +1,7 @@
+console.log("Main Routes Loaded ✅");
 const express = require('express')
+const router = express.Router()
+
 
 const authRoutes = require('./authRoutes')
 const chatRoutes = require('./chatRoutes')
@@ -6,7 +9,6 @@ const employeeRoutes = require('./employeeRoutes')
 const kpiRoutes = require('./kpiRoutes')
 const reportRoutes = require('./reportRoutes')
 
-const router = express.Router()
 
 router.use('/auth', authRoutes)
 router.use('/chat', chatRoutes)

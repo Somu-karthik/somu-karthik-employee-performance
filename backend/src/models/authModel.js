@@ -14,12 +14,17 @@ function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
+function resolveUserRole(user) {
+  return user?.role || 'Admin'
+}
+
 function buildToken(user) {
   return jwt.sign(
     {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: resolveUserRole(user),
     },
     getJwtSecret(),
     { expiresIn: '1d' },
@@ -57,12 +62,14 @@ async function insertUserRecord({ name, email, passwordHash }) {
     name,
     email,
     password: passwordHash,
+    role: 'Admin',
   })
 
   return {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: resolveUserRole(user),
   }
 }
 
@@ -92,6 +99,7 @@ async function loginUser(payload) {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: resolveUserRole(user),
     },
   }
 }
@@ -120,8 +128,17 @@ async function registerUser(payload) {
 
   const passwordHash = await bcrypt.hash(password, 10)
 
+  const user = await insertUserRecord({ name, email, passwordHash })
+  const token = buildToken(user)
+
   return {
-    user: await insertUserRecord({ name, email, passwordHash }),
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: resolveUserRole(user),
+    },
   }
 }
 

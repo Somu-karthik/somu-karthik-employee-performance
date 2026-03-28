@@ -36,7 +36,7 @@ async function findUserByEmail(email) {
   return users.find((user) => user.email === email) || null
 }
 
-async function createUser({ name, email, password }) {
+async function createUser({ name, email, password, role = 'Admin' }) {
   const users = await readUsers()
   const nextId =
     users.reduce((maxId, user) => Math.max(maxId, Number(user.id) || 0), 0) + 1
@@ -46,6 +46,7 @@ async function createUser({ name, email, password }) {
     name,
     email,
     password,
+    role,
   }
 
   users.push(newUser)

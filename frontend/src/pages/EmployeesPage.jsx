@@ -4,12 +4,14 @@ import {
   addEmployee as createEmployee,
   deleteEmployee as removeEmployee,
   getEmployees,
+  isAdminUser,
   updateEmployee,
 } from '../services'
 
 const employeesPerPage = 5
 
 function EmployeesPage() {
+  const canDeleteEmployees = isAdminUser()
   const [employeeList, setEmployeeList] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -219,6 +221,11 @@ function EmployeesPage() {
             <p className="mt-1 text-sm text-slate-500">
               Keep your directory updated and monitor performance signals.
             </p>
+            {!canDeleteEmployees ? (
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Delete access is limited to admin accounts.
+              </p>
+            ) : null}
           </div>
           <div className="flex w-full flex-col gap-3 xl:w-auto xl:flex-row">
             <input
@@ -329,6 +336,16 @@ function EmployeesPage() {
                     ? 'Update employee'
                     : 'Save employee'}
               </button>
+              {editingEmployeeId && canDeleteEmployees ? (
+                <button
+                  type="button"
+                  onClick={() => handleDeleteEmployee(editingEmployeeId)}
+                  disabled={isSubmittingEmployee}
+                  className="rounded-xl border border-red-200 px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  Delete employee
+                </button>
+              ) : null}
               <button
                 type="button"
                 onClick={() => {
@@ -439,13 +456,15 @@ function EmployeesPage() {
                           >
                             Edit
                           </button>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteEmployee(employee.id)}
-                            className="rounded-xl border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
-                          >
-                            Delete
-                          </button>
+                          {canDeleteEmployees ? (
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteEmployee(employee.id)}
+                              className="rounded-xl border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                            >
+                              Delete
+                            </button>
+                          ) : null}
                         </div>
                       </td>
                     </tr>

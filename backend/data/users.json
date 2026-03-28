@@ -10,5 +10,12 @@
     "name": "michael",
     "email": "manager@gmail.com",
     "password": "$2b$10$PJQytuOyPEBeP3UfPBwU6OSYfVY7O8/gOkezYBlpc9np2zMdsUa.."
+  },
+  {
+    "id": 3,
+    "name": "Kartik",
+    "email": "kartikk@gmail.com",
+    "password": "$2b$10$HDrFamxYuOPUobTWGG6YIOryeFm/7zCxb3KLivU/KNZVgQBXqcyEa",
+    "role": "Admin"
   }
 ]
