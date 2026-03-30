@@ -34,7 +34,7 @@ export async function login(payload) {
     throw error
   }
 }
-// hello
+//hello
 export async function register(payload) {
   const endpoint = '/auth/register'
 
