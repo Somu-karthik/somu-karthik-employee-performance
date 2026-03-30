@@ -1,4 +1,4 @@
-import pg from 'pg'
+const pg = require('pg')
 
 const { Pool } = pg
 
@@ -20,4 +20,4 @@ async function query(text, params = []) {
   return pool.query(text, params)
 }
 
-export { pool, query }
+module.exports = { pool, query }

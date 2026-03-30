@@ -1,9 +1,9 @@
-import express from 'express'
-import authRoutes from './authRoutes.js'
-import chatRoutes from './chatRoutes.js'
-import employeeRoutes from './employeeRoutes.js'
-import kpiRoutes from './kpiRoutes.js'
-import reportRoutes from './reportRoutes.js'
+const express = require('express')
+const authRoutes = require('./authRoutes')
+const chatRoutes = require('./chatRoutes')
+const employeeRoutes = require('./employeeRoutes')
+const kpiRoutes = require('./kpiRoutes')
+const reportRoutes = require('./reportRoutes')
 
 const router = express.Router()
 
@@ -13,4 +13,4 @@ router.use('/employees', employeeRoutes)
 router.use('/kpi', kpiRoutes)
 router.use('/reports', reportRoutes)
 
-export default router
+module.exports = router

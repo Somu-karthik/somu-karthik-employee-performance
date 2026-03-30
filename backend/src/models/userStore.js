@@ -1,9 +1,5 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const fs = require('node:fs/promises')
+const path = require('node:path')
 const dataDir = path.resolve(__dirname, '../../data')
 const usersFilePath = path.join(dataDir, 'users.json')
 
@@ -58,4 +54,4 @@ async function createUser({ name, email, password, role = 'Admin' }) {
   return newUser
 }
 
-export { createUser, findUserByEmail }
+module.exports = { createUser, findUserByEmail }

@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import { query } from './db.js'
-import { createUser, findUserByEmail } from './userStore.js'
-import { getJwtSecret } from '../utils/jwtSecret.js'
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const { query } = require('./db')
+const { createUser, findUserByEmail } = require('./userStore')
+const { getJwtSecret } = require('../utils/jwtSecret')
 
 function createAuthError(message, statusCode) {
   const error = new Error(message)
@@ -142,4 +142,4 @@ async function registerUser(payload) {
   }
 }
 
-export { loginUser, registerUser }
+module.exports = { loginUser, registerUser }

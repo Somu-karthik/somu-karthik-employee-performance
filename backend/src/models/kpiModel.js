@@ -133,4 +133,4 @@ async function updateKpi(id, payload) {
   return employeeKpis[kpiIndex]
 }
 
-export { getKpis, getKpisByEmployeeId, createKpi, updateKpi }
+module.exports = { getKpis, getKpisByEmployeeId, createKpi, updateKpi }

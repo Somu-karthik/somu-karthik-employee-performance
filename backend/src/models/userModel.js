@@ -1,4 +1,4 @@
-import db from '../utils/db.js'
+const db = require('../utils/db')
 
 const createUser = async (name, email, password, role) => {
   return db.query(
@@ -11,4 +11,4 @@ const findUserByEmail = async (email) => {
   return db.query("SELECT * FROM users WHERE email=$1", [email]);
 };
 
-export { createUser, findUserByEmail }
+module.exports = { createUser, findUserByEmail }

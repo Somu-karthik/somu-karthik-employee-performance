@@ -1,6 +1,6 @@
-import express from 'express'
-import * as chatController from '../controllers/chatController.js'
-import authMiddleware from '../middleware/authMiddleware.js'
+const express = require('express')
+const chatController = require('../controllers/chatController')
+const authMiddleware = require('../middleware/authMiddleware')
 
 const router = express.Router()
 
@@ -9,4 +9,4 @@ router.use(authMiddleware)
 router.get('/messages', chatController.getMessages)
 router.post('/messages', chatController.createMessage)
 
-export default router
+module.exports = router

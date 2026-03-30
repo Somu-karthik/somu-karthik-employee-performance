@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
-import { getJwtSecret } from '../utils/jwtSecret.js'
+const jwt = require('jsonwebtoken')
+const { getJwtSecret } = require('../utils/jwtSecret')
 
 function authMiddleware(req, res, next) {
   const authorizationHeader = req.headers.authorization || ''
@@ -25,4 +25,4 @@ function authMiddleware(req, res, next) {
   }
 }
 
-export default authMiddleware
+module.exports = authMiddleware

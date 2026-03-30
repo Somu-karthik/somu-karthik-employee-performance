@@ -1,9 +1,5 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const fs = require('node:fs/promises')
+const path = require('node:path')
 const dataDir = path.resolve(__dirname, '../../data')
 const chatMessagesFilePath = path.join(dataDir, 'chatMessages.json')
 
@@ -60,4 +56,4 @@ async function createMessage(message) {
   return newMessage
 }
 
-export { createMessage, listMessages }
+module.exports = { createMessage, listMessages }

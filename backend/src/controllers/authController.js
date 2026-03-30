@@ -1,4 +1,4 @@
-import { loginUser, registerUser } from '../models/authModel.js'
+const { loginUser, registerUser } = require('../models/authModel')
 
 async function register(req, res, next) {
   try {
@@ -26,4 +26,4 @@ async function login(req, res, next) {
   }
 }
 
-export { register, login }
+module.exports = { register, login }

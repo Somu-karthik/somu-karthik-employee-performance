@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken'
-import { Server } from 'socket.io'
-import * as chatModel from './models/chatModel.js'
-import { getJwtSecret } from './utils/jwtSecret.js'
+const jwt = require('jsonwebtoken')
+const { Server } = require('socket.io')
+const chatModel = require('./models/chatModel')
+const { getJwtSecret } = require('./utils/jwtSecret')
 
 let ioInstance = null
 
@@ -69,4 +69,4 @@ function isSocketEnabled() {
   return Boolean(ioInstance)
 }
 
-export { emitChatMessage, initializeSocket, isSocketEnabled }
+module.exports = { emitChatMessage, initializeSocket, isSocketEnabled }

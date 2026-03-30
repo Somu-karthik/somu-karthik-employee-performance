@@ -1,16 +1,13 @@
-import express from 'express'
-import cors from 'cors'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import routes from './routes/index.js'
-import notFound from './middleware/notFound.js'
-import errorHandler from './middleware/errorHandler.js'
-import { isSocketEnabled } from './socket.js'
-import pool from './utils/db.js'
+const express = require('express')
+const cors = require('cors')
+const path = require('node:path')
+const routes = require('./routes')
+const notFound = require('./middleware/notFound')
+const errorHandler = require('./middleware/errorHandler')
+const { isSocketEnabled } = require('./socket')
+const pool = require('./utils/db')
 
 const app = express()
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 const publicDir = path.resolve(__dirname, '../public')
 const allowedOrigin =
   process.env.CLIENT_ORIGIN || process.env.CLIENT_URL || 'http://localhost:5173'
@@ -64,4 +61,4 @@ app.get(/^\/(?!api).*/, (req, res, next) => {
 app.use(notFound)
 app.use(errorHandler)
 
-export default app
+module.exports = app

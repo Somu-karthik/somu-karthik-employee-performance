@@ -18,4 +18,4 @@ function authorizeRole(...allowedRoles) {
   }
 }
 
-export default authorizeRole
+module.exports = authorizeRole

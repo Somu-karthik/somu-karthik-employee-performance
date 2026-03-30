@@ -1,4 +1,4 @@
-import * as employeeModel from '../models/employeeModel.js'
+const employeeModel = require('../models/employeeModel')
 
 async function getEmployees(req, res, next) {
   try {
@@ -53,4 +53,4 @@ async function deleteEmployee(req, res, next) {
   }
 }
 
-export { getEmployees, addEmployee, updateEmployee, deleteEmployee }
+module.exports = { getEmployees, addEmployee, updateEmployee, deleteEmployee }

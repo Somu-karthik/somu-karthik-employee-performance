@@ -5,4 +5,4 @@ function notFound(req, res) {
   })
 }
 
-export default notFound
+module.exports = notFound
