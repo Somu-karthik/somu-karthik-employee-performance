@@ -1,67 +1,29 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const { createUser, findUserByEmail } = require("../models/userModel");
+import { loginUser, registerUser } from '../models/authModel.js'
 
-// ✅ REGISTER
-const register = async (req, res) => {
-  const { name, email, password, role } = req.body;
-
+async function register(req, res, next) {
   try {
-    const userExists = await findUserByEmail(email);
-
-    if (userExists.rows.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await createUser(name, email, hashedPassword, role);
-
-    const user = newUser.rows[0];
-    delete user.password;
+    const result = await registerUser(req.body)
 
     res.status(201).json({
       success: true,
-      user,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+      ...result,
+    })
+  } catch (error) {
+    next(error)
   }
-};
+}
 
-// ✅ LOGIN (your code — already correct)
-const login = async (req, res) => {
-  const { email, password } = req.body;
-
+async function login(req, res, next) {
   try {
-    const userResult = await findUserByEmail(email);
+    const result = await loginUser(req.body)
 
-    if (userResult.rows.length === 0) {
-      return res.status(400).json({ message: "User not found" });
-    }
-
-    const user = userResult.rows[0];
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
-    }
-
-    delete user.password;
-
-    res.json({
+    res.status(200).json({
       success: true,
-      message: "Login successful",
-      user,
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+      ...result,
+    })
+  } catch (error) {
+    next(error)
   }
-};
+}
 
-// ✅ EXPORT (VERY IMPORTANT)
-module.exports = { register, login };
+export { register, login }

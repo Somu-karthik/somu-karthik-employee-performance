@@ -181,9 +181,4 @@ async function deleteEmployee(id) {
   return deletedEmployee
 }
 
-module.exports = {
-  getEmployees,
-  addEmployee,
-  updateEmployee,
-  deleteEmployee,
-}
+export { getEmployees, addEmployee, updateEmployee, deleteEmployee }

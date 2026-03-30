@@ -1,4 +1,4 @@
-const employeeModel = require('../models/employeeModel')
+import * as employeeModel from '../models/employeeModel.js'
 
 function getEmployeeStatus(employee) {
   const score = Number(employee.kpiScore ?? 0)
@@ -119,6 +119,4 @@ async function getReports(req, res, next) {
   }
 }
 
-module.exports = {
-  getReports,
-}
+export { getReports }

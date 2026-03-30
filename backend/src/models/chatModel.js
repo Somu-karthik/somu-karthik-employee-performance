@@ -1,5 +1,5 @@
-const { query } = require('./db')
-const chatStore = require('./chatStore')
+import { query } from './db.js'
+import * as chatStore from './chatStore.js'
 
 function createChatError(message, statusCode) {
   const error = new Error(message)
@@ -70,8 +70,4 @@ async function createMessage({ text, user }) {
   return normalizeMessage(message)
 }
 
-module.exports = {
-  createChatError,
-  createMessage,
-  getMessages,
-}
+export { createChatError, createMessage, getMessages }

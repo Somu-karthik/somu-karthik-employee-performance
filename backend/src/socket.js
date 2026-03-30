@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken')
-const { getJwtSecret } = require('./utils/jwtSecret')
-const chatModel = require('./models/chatModel')
+import jwt from 'jsonwebtoken'
+import { Server } from 'socket.io'
+import * as chatModel from './models/chatModel.js'
+import { getJwtSecret } from './utils/jwtSecret.js'
 
 let ioInstance = null
 
@@ -9,61 +10,53 @@ function resolveClientOrigin() {
 }
 
 function initializeSocket(server) {
-  try {
-    // eslint-disable-next-line global-require
-    const { Server } = require('socket.io')
+  ioInstance = new Server(server, {
+    cors: {
+      origin: resolveClientOrigin(),
+      credentials: true,
+    },
+  })
 
-    ioInstance = new Server(server, {
-      cors: {
-        origin: resolveClientOrigin(),
-        credentials: true,
-      },
-    })
+  ioInstance.use((socket, next) => {
+    try {
+      const authToken = socket.handshake.auth?.token || ''
+      const rawToken = authToken.startsWith('Bearer ')
+        ? authToken.slice(7)
+        : authToken
 
-    ioInstance.use((socket, next) => {
+      if (!rawToken) {
+        const error = new Error('Authorization token is required')
+        error.data = { statusCode: 401 }
+        return next(error)
+      }
+
+      socket.user = jwt.verify(rawToken, getJwtSecret())
+      return next()
+    } catch (error) {
+      const authError = new Error('Invalid or expired token')
+      authError.data = { statusCode: 401 }
+      return next(authError)
+    }
+  })
+
+  ioInstance.on('connection', (socket) => {
+    socket.on('chat:message:create', async (payload, callback) => {
       try {
-        const authToken = socket.handshake.auth?.token || ''
-        const rawToken = authToken.startsWith('Bearer ')
-          ? authToken.slice(7)
-          : authToken
+        const message = await chatModel.createMessage({
+          text: payload?.text,
+          user: socket.user,
+        })
 
-        if (!rawToken) {
-          const error = new Error('Authorization token is required')
-          error.data = { statusCode: 401 }
-          return next(error)
-        }
-
-        socket.user = jwt.verify(rawToken, getJwtSecret())
-        return next()
+        ioInstance.emit('chat:message:new', message)
+        callback?.({ success: true, data: message })
       } catch (error) {
-        const authError = new Error('Invalid or expired token')
-        authError.data = { statusCode: 401 }
-        return next(authError)
+        callback?.({
+          success: false,
+          message: error.message || 'Unable to send message',
+        })
       }
     })
-
-    ioInstance.on('connection', (socket) => {
-      socket.on('chat:message:create', async (payload, callback) => {
-        try {
-          const message = await chatModel.createMessage({
-            text: payload?.text,
-            user: socket.user,
-          })
-
-          ioInstance.emit('chat:message:new', message)
-          callback?.({ success: true, data: message })
-        } catch (error) {
-          callback?.({
-            success: false,
-            message: error.message || 'Unable to send message',
-          })
-        }
-      })
-    })
-  } catch (error) {
-    ioInstance = null
-    console.warn('Socket.IO is not installed. Real-time chat is disabled.')
-  }
+  })
 }
 
 function emitChatMessage(message) {
@@ -76,8 +69,4 @@ function isSocketEnabled() {
   return Boolean(ioInstance)
 }
 
-module.exports = {
-  emitChatMessage,
-  initializeSocket,
-  isSocketEnabled,
-}
+export { emitChatMessage, initializeSocket, isSocketEnabled }

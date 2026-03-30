@@ -1,10 +1,11 @@
 import dotenv from 'dotenv'
 dotenv.config()
-
+import http from 'node:http'
 const db = require('./src/utils/db')
-const http = require('http')
-const app = require('./src/app')
-const { initializeSocket } = require('./src/socket')
+import app from './src/app.js'
+import { initializeSocket } from './src/socket.js'
+
+dotenv.config()
 
 const PORT = process.env.PORT || 5000
 const server = http.createServer(app)

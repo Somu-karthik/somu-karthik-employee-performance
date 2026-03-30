@@ -1,4 +1,6 @@
-const { Pool } = require('pg')
+import pg from 'pg'
+
+const { Pool } = pg
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -18,7 +20,4 @@ async function query(text, params = []) {
   return pool.query(text, params)
 }
 
-module.exports = {
-  pool,
-  query,
-}
+export { pool, query }

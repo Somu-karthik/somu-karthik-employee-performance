@@ -1,8 +1,7 @@
-const express = require('express')
-
-const employeeController = require('../controllers/employeeController')
-const authMiddleware = require('../middleware/authMiddleware')
-const authorizeRole = require('../middleware/authorizeRole')
+import express from 'express'
+import * as employeeController from '../controllers/employeeController.js'
+import authMiddleware from '../middleware/authMiddleware.js'
+import authorizeRole from '../middleware/authorizeRole.js'
 
 const router = express.Router()
 
@@ -13,4 +12,4 @@ router.post('/', employeeController.addEmployee)
 router.put('/:id', employeeController.updateEmployee)
 router.delete('/:id', authorizeRole('Admin'), employeeController.deleteEmployee)
 
-module.exports = router
+export default router

@@ -1,4 +1,4 @@
-const kpiModel = require('../models/kpiModel')
+import * as kpiModel from '../models/kpiModel.js'
 
 async function getKpis(req, res, next) {
   try {
@@ -52,9 +52,4 @@ async function updateKpi(req, res, next) {
   }
 }
 
-module.exports = {
-  getKpis,
-  getKpisByEmployeeId,
-  createKpi,
-  updateKpi,
-}
+export { getKpis, getKpisByEmployeeId, createKpi, updateKpi }

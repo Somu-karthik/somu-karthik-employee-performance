@@ -1,5 +1,5 @@
-const chatModel = require('../models/chatModel')
-const { emitChatMessage } = require('../socket')
+import * as chatModel from '../models/chatModel.js'
+import { emitChatMessage } from '../socket.js'
 
 async function getMessages(req, res, next) {
   try {
@@ -32,7 +32,4 @@ async function createMessage(req, res, next) {
   }
 }
 
-module.exports = {
-  createMessage,
-  getMessages,
-}
+export { createMessage, getMessages }

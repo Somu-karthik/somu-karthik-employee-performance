@@ -1,13 +1,13 @@
-const express = require('express');
-const authController = require('../controllers/authController');
-const router = express.Router();
+import express from 'express'
+import * as authController from '../controllers/authController.js'
 
-// ✅ TEST ROUTE
+const router = express.Router()
+
 router.get('/test', (req, res) => {
-  res.send("Auth route working ✅");
-});
+  res.send('Auth route working')
+})
 
-router.post('/login', authController.login);
-router.post('/register', authController.register);
+router.post('/login', authController.login)
+router.post('/register', authController.register)
 
-module.exports = router;
+export default router

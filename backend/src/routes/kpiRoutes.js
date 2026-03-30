@@ -1,7 +1,6 @@
-const express = require('express')
-
-const kpiController = require('../controllers/kpiController')
-const authMiddleware = require('../middleware/authMiddleware')
+import express from 'express'
+import * as kpiController from '../controllers/kpiController.js'
+import authMiddleware from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -12,4 +11,4 @@ router.get('/:employee_id', kpiController.getKpisByEmployeeId)
 router.post('/', kpiController.createKpi)
 router.put('/:id', kpiController.updateKpi)
 
-module.exports = router
+export default router

@@ -1,7 +1,6 @@
-const express = require('express')
-
-const reportController = require('../controllers/reportController')
-const authMiddleware = require('../middleware/authMiddleware')
+import express from 'express'
+import * as reportController from '../controllers/reportController.js'
+import authMiddleware from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -9,4 +8,4 @@ router.use(authMiddleware)
 
 router.get('/', reportController.getReports)
 
-module.exports = router
+export default router
