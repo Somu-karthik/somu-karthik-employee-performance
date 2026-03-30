@@ -53,7 +53,8 @@ export async function register(payload) {
 
   return data
 }
-//hello
+
 export function logout() {
   removeToken()
 }
+
