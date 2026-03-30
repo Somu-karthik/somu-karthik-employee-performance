@@ -2,6 +2,12 @@ const dotenv = require('dotenv')
 const http = require('node:http')
 const db = require('./src/utils/db')
 const app = require('./src/app')
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Employee Performance Tracker API is running 🚀"
+  });
+});
 const { initializeSocket } = require('./src/socket')
 
 dotenv.config()
