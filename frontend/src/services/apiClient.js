@@ -1,8 +1,23 @@
 import axios from 'axios'
 import { getToken, removeToken } from './tokenService'
 
-const configuredApiUrl = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, '')
-const baseURL = configuredApiUrl ? `${configuredApiUrl}/api` : '/api'
+function normalizeApiBaseUrl(rawValue) {
+  const value = rawValue?.trim()
+
+  if (!value || value.includes('your-backend-url')) {
+    return '/api'
+  }
+
+  const normalizedValue = value.replace(/\/+$/, '')
+
+  if (/\/api$/i.test(normalizedValue)) {
+    return normalizedValue
+  }
+
+  return `${normalizedValue}/api`
+}
+
+const baseURL = normalizeApiBaseUrl(import.meta.env.VITE_API_URL)
 
 const API = axios.create({
   baseURL,

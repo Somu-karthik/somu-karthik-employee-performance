@@ -32,7 +32,10 @@ function buildToken(user) {
 }
 
 function shouldUseDatabase() {
-  return Boolean(process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER)
+  return Boolean(
+    process.env.DATABASE_URL ||
+      (process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER),
+  )
 }
 
 async function findUserRecordByEmail(email) {
