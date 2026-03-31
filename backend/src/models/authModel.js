@@ -40,12 +40,25 @@ function shouldUseDatabase() {
 
 async function findUserRecordByEmail(email) {
   if (shouldUseDatabase()) {
-    const result = await query(
-      'SELECT id, name, email, password FROM users WHERE email = $1',
-      [email],
-    )
+    try {
+      const result = await query(
+        'SELECT id, name, email, password, role FROM users WHERE email = $1',
+        [email],
+      )
 
-    return result.rows[0] || null
+      return result.rows[0] || null
+    } catch (error) {
+      if (error.code !== '42703') {
+        throw error
+      }
+
+      const fallbackResult = await query(
+        'SELECT id, name, email, password FROM users WHERE email = $1',
+        [email],
+      )
+
+      return fallbackResult.rows[0] || null
+    }
   }
 
   return findUserByEmail(email)
@@ -53,12 +66,25 @@ async function findUserRecordByEmail(email) {
 
 async function insertUserRecord({ name, email, passwordHash }) {
   if (shouldUseDatabase()) {
-    const result = await query(
-      'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
-      [name, email, passwordHash],
-    )
+    try {
+      const result = await query(
+        'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role',
+        [name, email, passwordHash, 'Admin'],
+      )
 
-    return result.rows[0]
+      return result.rows[0]
+    } catch (error) {
+      if (error.code !== '42703') {
+        throw error
+      }
+
+      const fallbackResult = await query(
+        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
+        [name, email, passwordHash],
+      )
+
+      return fallbackResult.rows[0]
+    }
   }
 
   const user = await createUser({
