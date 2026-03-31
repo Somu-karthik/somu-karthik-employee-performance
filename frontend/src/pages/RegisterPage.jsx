@@ -49,6 +49,7 @@ function RegisterPage() {
     } catch (requestError) {
       setError(
         requestError.response?.data?.message ||
+          requestError.message ||
           'We could not create your account right now.',
       )
     } finally {

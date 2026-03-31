@@ -17,5 +17,12 @@
     "email": "kartikk@gmail.com",
     "password": "$2b$10$HDrFamxYuOPUobTWGG6YIOryeFm/7zCxb3KLivU/KNZVgQBXqcyEa",
     "role": "Admin"
+  },
+  {
+    "id": 4,
+    "name": "kartik",
+    "email": "kartik@gmail.com",
+    "password": "$2b$10$CT5uos53i7YyOp3SGy5TAuxGAvL6WcrT7ZgeDtcPOLeMsvSqaaqrm",
+    "role": "Admin"
   }
 ]
