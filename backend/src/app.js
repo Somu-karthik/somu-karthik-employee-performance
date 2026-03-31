@@ -9,30 +9,41 @@ const pool = require('./utils/db')
 
 const app = express()
 const publicDir = path.resolve(__dirname, '../public')
-const allowedOrigins = [
-  process.env.CLIENT_ORIGIN,
-  process.env.CLIENT_URL,
-  process.env.CORS_ORIGIN,
-  process.env.CORS_ORIGINS,
-]
-  .filter(Boolean)
-  .flatMap((value) => value.split(','))
-  .map((value) => value.trim())
-  .filter(Boolean)
+
+function parseAllowedOrigins() {
+  return [
+    process.env.FRONTEND_URL,
+    process.env.CLIENT_ORIGIN,
+    process.env.CLIENT_URL,
+    process.env.CORS_ORIGIN,
+    process.env.CORS_ORIGINS,
+  ]
+    .filter(Boolean)
+    .flatMap((value) => value.split(','))
+    .map((value) => value.trim())
+    .filter(Boolean)
+}
+
+const allowedOrigins = parseAllowedOrigins()
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      return callback(null, true)
+    }
+
+    console.warn('Blocked by CORS:', origin)
+    return callback(new Error(`Not allowed by CORS: ${origin}`))
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+}
+
+console.log('Allowed CORS origins:', allowedOrigins)
 
 // Middleware
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
-        return callback(null, true)
-      }
-
-      return callback(new Error('Not allowed by CORS'))
-    },
-    credentials: true,
-  }),
-)
+app.use(cors(corsOptions))
+app.options(/.*/, cors(corsOptions))
 app.use(express.json())
 
 // Health check route

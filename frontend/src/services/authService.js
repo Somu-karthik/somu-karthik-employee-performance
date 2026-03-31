@@ -19,7 +19,9 @@ export async function login(payload) {
       payload: requestBody,
     })
 
-    const { data } = await apiClient.post(endpoint, requestBody)
+    const { data } = await apiClient.post(endpoint, requestBody, {
+      withCredentials: true,
+    })
 
     console.log('Login response:', data)
 
@@ -43,7 +45,9 @@ export async function register(payload) {
     payload,
   })
 
-  const { data } = await apiClient.post(endpoint, payload)
+  const { data } = await apiClient.post(endpoint, payload, {
+    withCredentials: true,
+  })
 
   console.log('Register response:', data)
 

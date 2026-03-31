@@ -21,6 +21,7 @@ const baseURL = normalizeApiBaseUrl(import.meta.env.VITE_API_URL)
 
 const API = axios.create({
   baseURL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },

@@ -25,6 +25,6 @@ db.connect()
 
 initializeSocket(server)
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on ${PORT}`)
 })
