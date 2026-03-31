@@ -38,6 +38,19 @@ function shouldUseDatabase() {
   )
 }
 
+function isDatabaseFallbackError(error) {
+  return [
+    'ECONNREFUSED',
+    'ECONNRESET',
+    'ENOTFOUND',
+    'ETIMEDOUT',
+    'EAI_AGAIN',
+    '28P01',
+    '3D000',
+    '42P01',
+  ].includes(error?.code)
+}
+
 async function findUserRecordByEmail(email) {
   if (shouldUseDatabase()) {
     try {
@@ -48,16 +61,28 @@ async function findUserRecordByEmail(email) {
 
       return result.rows[0] || null
     } catch (error) {
+      if (isDatabaseFallbackError(error)) {
+        return findUserByEmail(email)
+      }
+
       if (error.code !== '42703') {
         throw error
       }
 
-      const fallbackResult = await query(
-        'SELECT id, name, email, password FROM users WHERE email = $1',
-        [email],
-      )
+      try {
+        const fallbackResult = await query(
+          'SELECT id, name, email, password FROM users WHERE email = $1',
+          [email],
+        )
 
-      return fallbackResult.rows[0] || null
+        return fallbackResult.rows[0] || null
+      } catch (fallbackError) {
+        if (isDatabaseFallbackError(fallbackError)) {
+          return findUserByEmail(email)
+        }
+
+        throw fallbackError
+      }
     }
   }
 
@@ -74,16 +99,52 @@ async function insertUserRecord({ name, email, passwordHash }) {
 
       return result.rows[0]
     } catch (error) {
+      if (isDatabaseFallbackError(error)) {
+        const user = await createUser({
+          name,
+          email,
+          password: passwordHash,
+          role: 'Admin',
+        })
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: resolveUserRole(user),
+        }
+      }
+
       if (error.code !== '42703') {
         throw error
       }
 
-      const fallbackResult = await query(
-        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
-        [name, email, passwordHash],
-      )
+      try {
+        const fallbackResult = await query(
+          'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
+          [name, email, passwordHash],
+        )
 
-      return fallbackResult.rows[0]
+        return fallbackResult.rows[0]
+      } catch (fallbackError) {
+        if (isDatabaseFallbackError(fallbackError)) {
+          const user = await createUser({
+            name,
+            email,
+            password: passwordHash,
+            role: 'Admin',
+          })
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: resolveUserRole(user),
+          }
+        }
+
+        throw fallbackError
+      }
     }
   }
 
