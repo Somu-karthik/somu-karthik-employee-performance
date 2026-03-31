@@ -32,7 +32,10 @@ function EmployeesPage() {
     setError('')
 
     try {
-      console.log('Fetching employees from:', '/api/employees')
+      console.log(
+        'Fetching employees from:',
+        `${import.meta.env.VITE_API_URL || ''}/api/employees`,
+      )
       const response = await getEmployees()
       console.log('Employee fetch response:', response)
       console.log('Employee fetch data:', response.data ?? [])

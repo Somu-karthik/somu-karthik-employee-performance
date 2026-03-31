@@ -27,7 +27,7 @@ export function getCurrentUser() {
     }
 
     return JSON.parse(decodeBase64Url(payload))
-  } catch (error) {
+  } catch {
     return null
   }
 }

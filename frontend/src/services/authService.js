@@ -34,7 +34,7 @@ export async function login(payload) {
     throw error
   }
 }
-//This is a comment
+
 export async function register(payload) {
   const endpoint = '/auth/register'
 
@@ -57,4 +57,3 @@ export async function register(payload) {
 export function logout() {
   removeToken()
 }
-

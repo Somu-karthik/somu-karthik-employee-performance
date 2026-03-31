@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { getToken, removeToken } from './tokenService'
 
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, '')
+const baseURL = configuredApiUrl ? `${configuredApiUrl}/api` : '/api'
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
